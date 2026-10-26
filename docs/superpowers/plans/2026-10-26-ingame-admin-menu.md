@@ -2534,10 +2534,10 @@ Expected: Branch liegt im Fork. Es wird nicht nach `origin` gepusht.
 - [ ] **Step 3: Draft-PR öffnen**
 
 ```powershell
-gh pr create --repo dede177/cs2-admin-plus --draft --base main --head WildcardBastard:feat/ingame-admin-menu --title "Ingame admin menu for AdminPlus" --body-file docs/superpowers/pr-body.md
+gh pr create --repo dede177/cs2-admin-plus --draft --base main --head WildcardBastard:feat/ingame-admin-menu --title "Ingame admin menu for AdminPlus" --body-file "$env:TEMP\pr-body.md"
 ```
 
-Der Text kommt aus `docs/superpowers/pr-body.md`: Ziel, Verweis auf Spec und Plan, Stand (welche Tasks erledigt, was am Test-Server verifiziert oder offen ist) und am Ende die Zeile `🤖 Generated with [Claude Code](https://claude.com/claude-code)`. Die Datei wird nur für den PR angelegt und nicht committet.
+Der Text kommt aus `$env:TEMP\pr-body.md`: Ziel, Verweis auf Spec und Plan, Stand (welche Tasks erledigt, was am Test-Server verifiziert oder offen ist) und am Ende die Zeile `🤖 Generated with [Claude Code](https://claude.com/claude-code)`. Die Datei liegt außerhalb des Repos.
 
 - [ ] **Step 4: Link melden**
 
