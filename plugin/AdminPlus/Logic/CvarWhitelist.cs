@@ -6,7 +6,7 @@ namespace AdminPlus.Logic;
 
 public enum CvarKind { Bool, Int, Float, Choice }
 
-public sealed class CvarDefinition
+public sealed class CvarDefinition : INamedEntry
 {
     [JsonPropertyName("Name")] public string Name { get; set; } = "";
     [JsonPropertyName("Label")] public string Label { get; set; } = "";
@@ -16,10 +16,21 @@ public sealed class CvarDefinition
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public CvarKind Kind { get; set; } = CvarKind.Choice;
 
-    [JsonPropertyName("Values")] public List<string> Values { get; set; } = new();
-    [JsonPropertyName("Min")] public double Min { get; set; }
-    [JsonPropertyName("Max")] public double Max { get; set; }
-    [JsonPropertyName("Step")] public double Step { get; set; } = 1;
+    [JsonPropertyName("Values")]
+    [JsonConverter(typeof(TolerantStringListConverter))]
+    public List<string> Values { get; set; } = new();
+
+    [JsonPropertyName("Min")]
+    [JsonNumberHandling(JsonNumberHandling.AllowReadingFromString)]
+    public double Min { get; set; }
+
+    [JsonPropertyName("Max")]
+    [JsonNumberHandling(JsonNumberHandling.AllowReadingFromString)]
+    public double Max { get; set; }
+
+    [JsonPropertyName("Step")]
+    [JsonNumberHandling(JsonNumberHandling.AllowReadingFromString)]
+    public double Step { get; set; } = 1;
 }
 
 public static class CvarWhitelist

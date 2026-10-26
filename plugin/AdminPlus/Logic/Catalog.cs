@@ -2,19 +2,25 @@ using System.Text.Json.Serialization;
 
 namespace AdminPlus.Logic;
 
-public sealed class MapEntry
+public sealed class MapEntry : INamedEntry
 {
     [JsonPropertyName("Name")] public string Name { get; set; } = "";
     [JsonPropertyName("Label")] public string Label { get; set; } = "";
     [JsonPropertyName("WorkshopId")] public string WorkshopId { get; set; } = "";
 }
 
-public sealed class ModeDefinition
+public sealed class ModeDefinition : INamedEntry
 {
     [JsonPropertyName("Name")] public string Name { get; set; } = "";
     [JsonPropertyName("Label")] public string Label { get; set; } = "";
-    [JsonPropertyName("GameType")] public int GameType { get; set; }
-    [JsonPropertyName("GameMode")] public int GameMode { get; set; }
+
+    [JsonPropertyName("GameType")]
+    [JsonNumberHandling(JsonNumberHandling.AllowReadingFromString)]
+    public int GameType { get; set; }
+
+    [JsonPropertyName("GameMode")]
+    [JsonNumberHandling(JsonNumberHandling.AllowReadingFromString)]
+    public int GameMode { get; set; }
 }
 
 public static class DefaultCatalog
