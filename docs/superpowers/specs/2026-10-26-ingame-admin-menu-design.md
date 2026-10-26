@@ -43,14 +43,17 @@ Alles bleibt **eine Assembly** (`AdminPlus.dll`). Der bestehende Build über `bu
 | Datei | Aufgabe |
 |---|---|
 | `AdminPlus.cs` | Plugin-Einstieg, Lebenszyklus, Konfiguration laden |
-| `PanelCommands.cs` | die bisherigen `sm_*`-Befehle, nur noch dünne Hüllen um `AdminActions` |
-| `AdminActions.cs` | die eigentliche Logik jeder Aktion; wird vom Panel und vom Menü genutzt |
+| `PanelCommands.cs` | die bisherigen `sm_*`-Befehle, zeichengleich aus `AdminPlus.cs` verschoben |
+| `AdminActions.cs` | die Aktionen des Menüs; die Panel-Befehle bleiben bewusst getrennt, damit ihr Verhalten garantiert gleich bleibt |
+| `AdminGate.cs` | zentrale Stelle jeder Menüaktion: Recht prüfen, ausführen, auditieren |
+| `Config/AdminPlusConfig.cs` | Plugin-Konfiguration mit Normalisierung |
 | `AdminMenu.cs` | Einstieg `!admin`, Hauptmenü, Rechtefilter |
 | `Menus/PlayerMenu.cs`, `MapMenu.cs`, `SettingsMenu.cs`, `MatchMenu.cs` | je ein Untermenü |
 | `Logic/Permissions.cs` | Zuordnung Menüpunkt zu Flag |
 | `Logic/CvarWhitelist.cs` | Whitelist laden, Werte prüfen |
 | `Logic/ConfigCatalog.cs` | Config-Dateien im erlaubten Ordner auflisten und prüfen |
 | `Logic/Audit.cs` | Format der Logzeile |
+| `Logic/ActionResult.cs`, `Logic/ConfigState.cs`, `Logic/GameCommands.cs`, `Logic/Catalog.cs` | Ergebnis einer Aktion, zuletzt geladene Config, Befehlsbau für Kick/Ban/Map/Modus/Match, Standard-Maps und -Modi |
 
 Dateien in `Logic/` verwenden keine CounterStrikeSharp-Typen. Nur sie werden per Unit-Test geprüft.
 
