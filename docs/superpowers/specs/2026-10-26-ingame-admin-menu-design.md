@@ -155,7 +155,7 @@ Eine Datei `AdminPlus.json` im Plugin-Konfigurationsordner von CounterStrikeShar
 - Map-Liste mit optionaler Workshop-ID
 - Spielmodi mit den zugehörigen Cvars
 
-Fehlt die Datei, legt das Plugin Standardwerte an. Ist sie ungültig, bleiben das Menü für Einstellungen und Maps leer, der Rest funktioniert, und es steht eine Fehlermeldung im Log.
+Fehlt die Datei, legt das Plugin Standardwerte an. Einzelne ungültige Einträge (unbekannter `Kind`, falscher JSON-Typ, verbotener Name) werden verworfen und je mit einer Logzeile gemeldet; der Rest funktioniert. Zahlen dürfen auch als Zeichenkette stehen. Ist die Datei dagegen **syntaktisch** ungültig, lädt CounterStrikeSharp das Plugin gar nicht, auch die Panel-Befehle fehlen dann. Das Plugin kann das nicht abfangen, weil die Konfiguration vor `Load` außerhalb jeder Fehlerbehandlung gelesen wird; die README weist darauf hin.
 
 ## 9. Fehlerverhalten
 

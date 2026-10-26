@@ -2416,6 +2416,10 @@ Der Nutzer geht jeden Punkt durch, Claude liest danach die Auditzeilen mit `dock
 7. Spieler verlässt den Server, während das Aktionsmenü offen ist, dann Aktion wählen: „Spieler nicht mehr auf dem Server", Audit `result=target_gone`.
 8. Beide Menütypen: in `configs/plugins/AdminPlus/AdminPlus.json` `MenuType` auf `center` stellen, Plugin neu laden, Bedienung und Tastenbelegung notieren, danach den besseren Typ als Standard festlegen.
 9. Absichtlich syntaktisch kaputtes JSON in `AdminPlus.json` (fehlende Klammer): Verhalten notieren (lädt das Plugin trotzdem? Meldung im Log?). Danach Datei wiederherstellen.
+10. (aus dem Review) Zweiter Spieler nennt sich `Max<br>Kicken` bzw. `a"b`: Spielerliste in beiden Menütypen bleibt korrekt nummeriert, Auditzeile bleibt eine Zeile.
+11. (aus dem Review) Kick auf einen Spieler, der gerade erst verbindet: Meldung notieren (erwartet „darf nicht" oder „nicht mehr auf dem Server"; beides ist kein Fehler, aber die Formulierung soll passen).
+12. (aus dem Review) Plugin mitten in der Map per `css_plugins load` laden: Erscheinen die Warnungen zu unbekannten Cvar-Namen sofort oder erst beim nächsten Mapwechsel? Ergebnis in Abschnitt 11 der Spec eintragen.
+13. (aus dem Review) Moduswechsel auf einer Workshop-Map: Schlägt `changelevel` fehl, bleiben `game_type`/`game_mode` bereits umgestellt. Verhalten notieren.
 
 - [ ] **Step 7: Ergebnistabelle ausfüllen**
 

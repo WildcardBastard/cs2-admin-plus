@@ -76,6 +76,8 @@ On first load CounterStrikeSharp creates `configs/plugins/AdminPlus/AdminPlus.js
 - `Maps`: map name and optional workshop id.
 - `Modes`: `GameType` and `GameMode` numbers.
 
+Mistakes inside an entry (unknown `Kind`, a number written as `"5"`, an entry of the wrong JSON type) drop only that entry and log a warning; numbers may be written as strings. A **JSON syntax error** (missing bracket, trailing comma) is different: CounterStrikeSharp then refuses to load the whole plugin, including the `sm_*` panel commands, and the error appears in the server console at plugin load. Validate the file after editing it.
+
 Example configs for testing live in `plugin/AdminPlus/examples/cfg-hstx/`. They are not official tournament configs. Copy them to `game/csgo/cfg/hstx/` yourself.
 
 ### Panel commands
