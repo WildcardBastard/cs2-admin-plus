@@ -23,7 +23,7 @@ public partial class AdminPlus
             menu.AddMenuOption("Config laden ...", (p, _) => OpenConfigs(p));
 
         menu.AddMenuOption("Zurück", (p, _) => OpenMain(p));
-        menu.Open(admin);
+        Show(menu, admin);
     }
 
     private void OpenCategory(CCSPlayerController admin, string category)
@@ -37,7 +37,7 @@ public partial class AdminPlus
         }
 
         menu.AddMenuOption("Zurück", (p, _) => OpenSettings(p));
-        menu.Open(admin);
+        Show(menu, admin);
     }
 
     private void OpenCvarValues(CCSPlayerController admin, CvarDefinition def)
@@ -56,7 +56,7 @@ public partial class AdminPlus
         }
 
         menu.AddMenuOption("Zurück", (p, _) => OpenCategory(p, def.Category));
-        menu.Open(admin);
+        Show(menu, admin);
     }
 
     private void OpenConfigs(CCSPlayerController admin)
@@ -75,6 +75,6 @@ public partial class AdminPlus
         }
 
         menu.AddMenuOption("Zurück", (p, _) => OpenSettings(p));
-        menu.Open(admin);
+        Show(menu, admin);
     }
 }

@@ -101,4 +101,32 @@ public class PermissionsTests
         Assert.False(Targeting.IsAllowed(3, 3, true));
         Assert.False(Targeting.IsAllowed(3, 7, false));
     }
+
+    [Fact]
+    public void Gate_skips_the_target_check_for_actions_that_do_not_need_one()
+    {
+        bool called = false;
+        var block = Targeting.Gate(MenuAction.Mute, 7, _ => { called = true; return ActionResult.Denied("x"); });
+
+        Assert.Null(block);
+        Assert.False(called);
+    }
+
+    [Fact]
+    public void Gate_blocks_kick_and_ban_without_a_target()
+    {
+        var block = Targeting.Gate(MenuAction.Kick, null, _ => ActionResult.Ok(""));
+
+        Assert.NotNull(block);
+        Assert.Equal(Audit.Results.Invalid, block!.Value.Result);
+    }
+
+    [Fact]
+    public void Gate_passes_through_a_failed_target_check_and_lets_a_passed_one_run()
+    {
+        var denied = ActionResult.Denied("nope");
+        Assert.Equal(denied, Targeting.Gate(MenuAction.Ban, 7, _ => denied));
+        Assert.Equal(ActionResult.TargetGone(), Targeting.Gate(MenuAction.Kick, 7, _ => ActionResult.TargetGone()));
+        Assert.Null(Targeting.Gate(MenuAction.Kick, 7, _ => ActionResult.Ok("")));
+    }
 }

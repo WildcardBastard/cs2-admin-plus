@@ -14,36 +14,30 @@ public partial class AdminPlus
         {
             int userId = target.UserId!.Value;
             string name = target.PlayerName;
-            menu.AddMenuOption(name, (p, _) => OpenPlayerActions(p, userId, name));
+            menu.AddMenuOption(PlayerLabel(name), (p, _) => OpenPlayerActions(p, userId, name));
         }
 
         menu.AddMenuOption("Zurück", (p, _) => OpenMain(p));
-        menu.Open(admin);
+        Show(menu, admin);
     }
 
     private void OpenPlayerActions(CCSPlayerController admin, int userId, string name)
     {
-        var menu = NewMenu(name);
+        var menu = NewMenu(PlayerLabel(name));
 
         void Add(string label, MenuAction action, string detail, Func<ActionResult> run, Action<CCSPlayerController> next)
         {
             if (!Can(admin, action)) return;
             menu.AddMenuOption(label, (p, _) =>
             {
-                Execute(p, action, name, detail, run);
+                Execute(p, action, name, detail, run, userId);
                 next(p);
             });
         }
 
         void Stay(CCSPlayerController p) => OpenPlayerActions(p, userId, name);
 
-        ActionResult Guarded(CCSPlayerController p, Func<ActionResult> run)
-        {
-            var check = CheckTarget(p, userId);
-            return check.Result == Audit.Results.Ok ? run() : check;
-        }
-
-        Add("Kicken", MenuAction.Kick, "", () => Guarded(admin, () => AdminActions.Kick(userId)), OpenPlayers);
+        Add("Kicken", MenuAction.Kick, "", () => AdminActions.Kick(userId), OpenPlayers);
         if (Can(admin, MenuAction.Ban))
             menu.AddMenuOption("Bannen ...", (p, _) => OpenBanDurations(p, userId, name));
         Add("Muten / Entmuten", MenuAction.Mute, "", () => AdminActions.ToggleMute(userId), Stay);
@@ -54,27 +48,23 @@ public partial class AdminPlus
         Add("Respawn", MenuAction.Respawn, "", () => AdminActions.Respawn(userId), Stay);
 
         menu.AddMenuOption("Zurück", (p, _) => OpenPlayers(p));
-        menu.Open(admin);
+        Show(menu, admin);
     }
 
     private void OpenBanDurations(CCSPlayerController admin, int userId, string name)
     {
-        var menu = NewMenu($"Bann: {name}");
+        var menu = NewMenu($"Bann: {PlayerLabel(name)}");
 
         foreach (var (label, minutes) in new[] { ("1 Stunde", 60), ("1 Tag", 1440), ("7 Tage", 10080), ("Permanent", 0) })
         {
             menu.AddMenuOption(label, (p, _) =>
             {
-                Execute(p, MenuAction.Ban, name, $"{minutes} min", () =>
-                {
-                    var check = CheckTarget(p, userId);
-                    return check.Result == Audit.Results.Ok ? AdminActions.Ban(userId, minutes) : check;
-                });
+                Execute(p, MenuAction.Ban, name, $"{minutes} min", () => AdminActions.Ban(userId, minutes), userId);
                 OpenPlayers(p);
             });
         }
 
         menu.AddMenuOption("Zurück", (p, _) => OpenPlayerActions(p, userId, name));
-        menu.Open(admin);
+        Show(menu, admin);
     }
 }

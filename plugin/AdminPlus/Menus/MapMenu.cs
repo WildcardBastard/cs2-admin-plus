@@ -31,6 +31,6 @@ public partial class AdminPlus
         }
 
         menu.AddMenuOption("Zurück", (p, _) => OpenMain(p));
-        menu.Open(admin);
+        Show(menu, admin);
     }
 }

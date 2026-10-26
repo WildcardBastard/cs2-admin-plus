@@ -9,8 +9,23 @@ namespace AdminPlus;
 
 public partial class AdminPlus
 {
+    private bool CenterMenus => Config.MenuType == "center";
+
     private IMenu NewMenu(string title) =>
-        Config.MenuType == "center" ? new CenterHtmlMenu(title, this) : new ChatMenu(title);
+        CenterMenus ? new CenterHtmlMenu(title, this) : new ChatMenu(title);
+
+    /// <summary>Player names go through here before they become menu text (HTML-encoded for center menus, truncated).</summary>
+    private string PlayerLabel(string? name) => MenuText.Label(name, CenterMenus);
+
+    /// <summary>Closes the menu that is still active (its instance keeps an OnTick listener until Close) and opens the next one.</summary>
+    private static void Show(IMenu menu, CCSPlayerController player)
+    {
+        CloseMenu(player);
+        menu.Open(player);
+    }
+
+    private static void CloseMenu(CCSPlayerController player) =>
+        MenuManager.GetActiveMenu(player)?.Close();
 
     private void OnAdminCommand(CCSPlayerController? player, CommandInfo info)
     {
@@ -41,7 +56,8 @@ public partial class AdminPlus
             menu.AddMenuOption("Einstellungen", (p, _) => OpenSettings(p));
         if (Can(admin, MenuAction.MatchPause) || Can(admin, MenuAction.MatchRestart))
             menu.AddMenuOption("Match", (p, _) => OpenMatch(p));
+        menu.AddMenuOption("Schließen", (p, _) => CloseMenu(p));
 
-        menu.Open(admin);
+        Show(menu, admin);
     }
 }

@@ -12,17 +12,19 @@ public partial class AdminPlus
         Permissions.Can(flag => AdminManager.PlayerHasPermissions(admin, flag), action);
 
     /// <summary>
-    /// Single choke point for every menu action: re-checks the permission, runs the action,
-    /// writes the audit line and tells the admin the outcome.
+    /// Single choke point for every menu action: re-checks the permission, applies the
+    /// target rule for kick and ban, runs the action, writes the audit line and tells the
+    /// admin the outcome.
     /// </summary>
-    internal void Execute(CCSPlayerController admin, MenuAction action, string target, string detail, Func<ActionResult> run)
+    internal void Execute(CCSPlayerController admin, MenuAction action, string target, string detail,
+        Func<ActionResult> run, int? targetUserId = null)
     {
         ActionResult outcome;
         try
         {
-            outcome = Can(admin, action)
-                ? run()
-                : ActionResult.Denied("Dir fehlt das Recht dafür.");
+            outcome = !Can(admin, action)
+                ? ActionResult.Denied("Dir fehlt das Recht dafür.")
+                : Targeting.Gate(action, targetUserId, id => CheckTarget(admin, id)) ?? run();
         }
         catch (Exception ex)
         {

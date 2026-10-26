@@ -28,7 +28,7 @@ public partial class AdminPlus
             menu.AddMenuOption("Neustart ...", (p, _) => OpenRestartConfirm(p));
 
         menu.AddMenuOption("Zurück", (p, _) => OpenMain(p));
-        menu.Open(admin);
+        Show(menu, admin);
     }
 
     private void OpenRestartConfirm(CCSPlayerController admin)
@@ -41,6 +41,6 @@ public partial class AdminPlus
             OpenMatch(p);
         });
         menu.AddMenuOption("Abbrechen", (p, _) => OpenMatch(p));
-        menu.Open(admin);
+        Show(menu, admin);
     }
 }

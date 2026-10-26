@@ -41,4 +41,17 @@ public static class Targeting
 
     public static bool IsAllowed(int adminUserId, int targetUserId, bool immunityAllows) =>
         adminUserId != targetUserId && immunityAllows;
+
+    /// <summary>
+    /// Decides whether an action may run against its target. Returns null when it may,
+    /// otherwise the result that should be audited and shown instead of running it.
+    /// </summary>
+    public static ActionResult? Gate(MenuAction action, int? targetUserId, Func<int, ActionResult> checkTarget)
+    {
+        if (!NeedsTargetCheck(action)) return null;
+        if (targetUserId is null) return ActionResult.Invalid("Kein Ziel angegeben.");
+
+        var check = checkTarget(targetUserId.Value);
+        return check.Result == Audit.Results.Ok ? null : check;
+    }
 }
