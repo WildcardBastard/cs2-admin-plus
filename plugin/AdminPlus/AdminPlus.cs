@@ -30,6 +30,7 @@ public partial class AdminPlus : BasePlugin, IPluginConfig<AdminPlusConfig>
 
     public override void Load(bool hotReload)
     {
+        AddCommand("css_admin", "Open the HSTX admin menu", OnAdminCommand);
         RegisterListener<Listeners.OnMapStart>(_ => CheckCvarNames());
 
         Console.WriteLine("[AdminPlus] ✅ Loaded — all sm_ commands registered.");
